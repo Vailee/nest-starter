@@ -5,7 +5,7 @@ import { LoggerModule } from './common/logger/logger.module';
 // import { RedisModule } from '@nestjs-modules/ioredis';
 // import { ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
-// import { redisStore } from 'cache-manager-ioredis-yet';
+import { redisStore } from 'cache-manager-ioredis-yet';
 @Module({
   imports: [
     ConfigModule,
@@ -35,7 +35,7 @@ import { CacheModule } from '@nestjs/cache-manager';
     // CacheModule.register
     CacheModule.register({
       ttl: 20000,
-      // store: redisStore,
+      store: redisStore,
       host: '175.178.88.89',
       port: 6379,
       password: '123456',
