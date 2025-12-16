@@ -6,6 +6,8 @@ import { LoggerModule } from './common/logger/logger.module';
 // import { ConfigService } from '@nestjs/config';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-ioredis-yet';
+import { MailModule } from './common/mail/mail.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule,
@@ -40,6 +42,8 @@ import { redisStore } from 'cache-manager-ioredis-yet';
       port: 6379,
       password: '123456',
     }),
+    UserModule,
+    MailModule,
   ],
   controllers: [AppController],
   providers: [],
