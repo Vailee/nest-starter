@@ -40,7 +40,7 @@ async function bootstrap() {
   }
   // 启用全局Winston日志记录
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
-
   await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();

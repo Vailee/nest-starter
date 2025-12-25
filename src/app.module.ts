@@ -8,6 +8,7 @@ import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-ioredis-yet';
 import { MailModule } from './common/mail/mail.module';
 import { UserModule } from './user/user.module';
+import { PrismaModule } from './database/prisma/prisma.module';
 @Module({
   imports: [
     ConfigModule,
@@ -44,6 +45,7 @@ import { UserModule } from './user/user.module';
     }),
     UserModule,
     MailModule,
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [],
