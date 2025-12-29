@@ -12,9 +12,9 @@ async function bootstrap() {
   const errorFilter = configService.get<string>('ERROR_FILTER', 'true');
   const prefix = configService.get<string>('PREFIX', '');
   const cors = configService.get<boolean>('CORS', false);
-  const versionStr = configService.get<string>('VERSION', '1');
+  const versionStr = configService.get<string>('VERSION');
   let version = [versionStr];
-  if (versionStr.indexOf(',')) {
+  if (versionStr && versionStr.indexOf(',')) {
     version = versionStr.split(',').map((v) => v.trim());
   }
 
@@ -40,7 +40,7 @@ async function bootstrap() {
   }
   // 启用全局Winston日志记录
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
-
   await app.listen(port);
+  console.log(`Application is running on: ${await app.getUrl()}`);
 }
 bootstrap();
