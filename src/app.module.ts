@@ -10,6 +10,7 @@ import { MailModule } from './common/mail/mail.module';
 import { TypeormService } from './database/typeorm/typeorm.service';
 import { TypeormModule } from './database/typeorm/typeorm.module';
 import { PhotoModule } from './photo/photo.module';
+import { AuthModule } from '@/auth/auth.module';
 @Module({
   imports: [
     ConfigModule,
@@ -47,6 +48,7 @@ import { PhotoModule } from './photo/photo.module';
     MailModule,
     TypeormModule,
     PhotoModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [TypeormService],
