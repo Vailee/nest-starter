@@ -6,7 +6,7 @@ import { CreatePhotoDto } from './dto/create-photo.dto';
 @Injectable()
 export class PhotoService {
   constructor(
-    @Inject('PHOTO_REPOSITORY')
+    @Inject('PHOTO_REPOSITORY') // 注入 PHOTO_REPOSITORY 令牌
     private photoRepository: Repository<Photo>,
   ) {}
 

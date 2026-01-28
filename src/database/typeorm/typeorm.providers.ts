@@ -16,7 +16,16 @@ export const databaseProviders = [
         synchronize: true,
       });
 
-      return dataSource.initialize();
+      return dataSource
+        .initialize()
+        .then((source) => {
+          console.log('Data Source has been initialized!');
+          return source;
+        })
+        .catch((err) => {
+          console.error('Error during Data Source initialization', err);
+          throw err;
+        });
     },
   },
 ];

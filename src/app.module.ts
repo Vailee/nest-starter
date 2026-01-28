@@ -11,6 +11,7 @@ import { TypeormService } from './database/typeorm/typeorm.service';
 import { TypeormModule } from './database/typeorm/typeorm.module';
 import { PhotoModule } from './photo/photo.module';
 import { AuthModule } from '@/auth/auth.module';
+import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule,
@@ -49,6 +50,7 @@ import { AuthModule } from '@/auth/auth.module';
     TypeormModule,
     PhotoModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
   providers: [TypeormService],

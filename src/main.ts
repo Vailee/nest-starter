@@ -48,6 +48,7 @@ async function bootstrap() {
     new ValidationPipe({
       // 去除类上不存在的字段
       whitelist: true,
+      transform: true,
     }),
   );
   await app.listen(port);
