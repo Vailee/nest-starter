@@ -3,7 +3,11 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import { WINSTON_MODULE_NEST_PROVIDER } from 'nest-winston';
 import { AllExceptionFilter } from './common/filters/all-exception.filter';
-import { VERSION_NEUTRAL, VersioningType } from '@nestjs/common';
+import {
+  ValidationPipe,
+  VERSION_NEUTRAL,
+  VersioningType,
+} from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -40,6 +44,13 @@ async function bootstrap() {
   }
   // 启用全局Winston日志记录
   app.useLogger(app.get(WINSTON_MODULE_NEST_PROVIDER));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      // 去除类上不存在的字段
+      whitelist: true,
+      transform: true,
+    }),
+  );
   await app.listen(port);
   console.log(`Application is running on: ${await app.getUrl()}`);
 }

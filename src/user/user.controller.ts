@@ -10,57 +10,59 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { MailerService } from '@nestjs-modules/mailer';
-// import { PrismaService } from '@/database/prisma/prisma.service';
 
 @Controller('user')
 export class UserController {
-  constructor(
-    private readonly userService: UserService,
-    private readonly mailService: MailerService,
-  ) {}
-  @Get('mail')
-  sendMail() {
-    return this.mailService
-      .sendMail({
-        to: 'vailee@126.com',
-        from: '"NB Team" <502791869@qq.com>',
-        subject: 'Test',
-        template: './welcome',
-        context: {
-          name: 'NB Team',
-        },
-      })
-      .then((res) => {
-        console.log('🚀 ~ res:', res);
-      })
-      .catch((err) => {
-        console.log('🚀 ~ err:', err);
-      });
-  }
+  constructor(private readonly userService: UserService) {}
 
+  // 新增用户
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
+  async createUser(@Body() createUserDto: CreateUserDto) {
     return this.userService.create(createUserDto);
   }
 
+  // 查询所有用户
   @Get()
-  findAll() {
-    return this.userService.findAllUser();
+  async findAllUsers() {
+    return this.userService.findAll();
   }
 
-  @Get('/:id')
-  async getPostById(@Param('id') id: string): Promise<any> {
-    return this.userService.findOneUser(+id);
+  // 根据id查询用户
+  @Get(':id')
+  async findUserById(@Param('id') id: string) {
+    return this.userService.findOne(+id);
   }
 
-  @Patch('/:id')
-  update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  // 根据id删除用户
+  @Delete(':id')
+  async deleteUserById(@Param('id') id: string) {
+    return this.userService.remove(+id);
+  }
+
+  // 根据id更新用户
+  @Patch(':id')
+  async updateUserById(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 
-  @Delete('/:id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(+id);
+  // 根据用户名查询用户
+  @Get('name/:name')
+  async findUserByName(@Param('name') name: string) {
+    return this.userService.findOneByName(name);
+  }
+
+  // 根据用户名删除用户
+  @Delete('name/:name')
+  async deleteUserByName(@Param('name') name: string) {
+    return this.userService.removeByName(name);
+  }
+
+  // 根据用户名更新用户
+  @Patch('name/:name')
+  async updateUserByName(
+    @Param('name') name: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
+    return this.userService.updateByName(name, updateUserDto);
   }
 }

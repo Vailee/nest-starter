@@ -7,8 +7,11 @@ import { LoggerModule } from './common/logger/logger.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { redisStore } from 'cache-manager-ioredis-yet';
 import { MailModule } from './common/mail/mail.module';
+import { TypeormService } from './database/typeorm/typeorm.service';
+import { TypeormModule } from './database/typeorm/typeorm.module';
+import { PhotoModule } from './photo/photo.module';
+import { AuthModule } from '@/auth/auth.module';
 import { UserModule } from './user/user.module';
-import { PrismaModule } from './database/prisma/prisma.module';
 @Module({
   imports: [
     ConfigModule,
@@ -43,11 +46,13 @@ import { PrismaModule } from './database/prisma/prisma.module';
       port: 6379,
       password: '123456',
     }),
-    UserModule,
     MailModule,
-    PrismaModule,
+    TypeormModule,
+    PhotoModule,
+    AuthModule,
+    UserModule,
   ],
   controllers: [AppController],
-  providers: [],
+  providers: [TypeormService],
 })
 export class AppModule {}
