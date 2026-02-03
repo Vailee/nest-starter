@@ -11,10 +11,14 @@ import {
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard } from '@nestjs/passport';
+// import { AuthGuard } from '@nestjs/passport';
 import { AdminGuard } from '@/common/guards/admin/admin.guard';
+import { JwtGuard } from '@/common/guards/jwt.guard';
+import { Public } from '@/common/decorators/public.decorator';
 
 @Controller('user')
+// @UseGuards(AuthGuard('jwt'), AdminGuard)
+@UseGuards(JwtGuard, AdminGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
@@ -25,6 +29,7 @@ export class UserController {
   }
 
   // 查询所有用户
+  @Public()
   @Get()
   async findAllUsers() {
     return this.userService.findAll();
@@ -57,7 +62,7 @@ export class UserController {
   // @UseGuards(AdminGuard)
   // @UseGuards(AuthGuard('jwt'))
   // 在一起的话从前往后执行
-  @UseGuards(AuthGuard('jwt'), AdminGuard)
+  // @UseGuards(AuthGuard('jwt'), AdminGuard)
   async findUserByName(@Param('name') name: string) {
     return this.userService.findOneByName(name);
   }
