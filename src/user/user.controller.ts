@@ -6,10 +6,12 @@ import {
   Patch,
   Param,
   Delete,
+  UseGuards,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('user')
 export class UserController {
@@ -41,12 +43,16 @@ export class UserController {
 
   // 根据id更新用户
   @Patch(':id')
-  async updateUserById(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
+  async updateUserById(
+    @Param('id') id: string,
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     return this.userService.update(+id, updateUserDto);
   }
 
   // 根据用户名查询用户
   @Get('name/:name')
+  @UseGuards(AuthGuard('jwt'))
   async findUserByName(@Param('name') name: string) {
     return this.userService.findOneByName(name);
   }
