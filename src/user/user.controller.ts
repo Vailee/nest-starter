@@ -12,6 +12,7 @@ import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { AuthGuard } from '@nestjs/passport';
+import { AdminGuard } from '@/common/guards/admin/admin.guard';
 
 @Controller('user')
 export class UserController {
@@ -52,7 +53,11 @@ export class UserController {
 
   // 根据用户名查询用户
   @Get('name/:name')
-  @UseGuards(AuthGuard('jwt'))
+  // 守卫从下往上执行，
+  // @UseGuards(AdminGuard)
+  // @UseGuards(AuthGuard('jwt'))
+  // 在一起的话从前往后执行
+  @UseGuards(AuthGuard('jwt'), AdminGuard)
   async findUserByName(@Param('name') name: string) {
     return this.userService.findOneByName(name);
   }
