@@ -5,9 +5,11 @@ export class SignupUserDto {
   name: string;
   @IsNotEmpty()
   @IsString()
-  // @Length(6, 20, {
-  //   message: (ctx) => `${ctx} is not a valid email`,
-  // })
+  @Length(6, 20, {
+    message: (ctx: any) => {
+      return `Password must be between ${ctx.constraints[0]} and ${ctx.constraints[1]} characters long`;
+    },
+  })
   password: string;
   @IsNotEmpty()
   @IsString()

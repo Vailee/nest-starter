@@ -3,6 +3,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class UserService {
@@ -12,7 +13,13 @@ export class UserService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    return this.userRepository.save(createUserDto);
+    // 对密码hash处理
+    const { password } = createUserDto;
+    const newHashPass = await argon2.hash(password);
+    return this.userRepository.save({
+      ...createUserDto,
+      password: newHashPass,
+    });
   }
 
   async findAll() {

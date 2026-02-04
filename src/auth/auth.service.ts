@@ -1,6 +1,7 @@
 import { UserService } from '@/user/user.service';
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import * as argon2 from 'argon2';
 
 @Injectable()
 export class AuthService {
@@ -10,11 +11,13 @@ export class AuthService {
   ) {}
   async signin(name: string, password: string) {
     const user = await this.userService.findOneByName(name);
+    console.log('signin user:', user);
     if (!user) {
-      throw new Error('User not found');
+      throw new ForbiddenException('User not found');
     }
-    if (user.password !== password) {
-      throw new Error('Password not match');
+    const isPasswordValid = await argon2.verify(user.password, password);
+    if (!isPasswordValid) {
+      throw new ForbiddenException('Password not match');
     }
     const payload = { sub: user.id, username: user.name };
     return {
@@ -22,6 +25,11 @@ export class AuthService {
     };
   }
   async signup(name: string, password: string, email: string) {
+    // 检查用户是否已存在
+    const existingUser = await this.userService.findOneByName(name);
+    if (existingUser) {
+      throw new ForbiddenException('Username already exists');
+    }
     const user = await this.userService.create({
       name,
       password,
