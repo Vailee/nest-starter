@@ -29,7 +29,7 @@ export class UserController {
   }
 
   // 查询所有用户
-  @Public()
+  @Public() // 忽略守卫
   @Get()
   async findAllUsers() {
     return this.userService.findAll();

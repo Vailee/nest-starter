@@ -1,7 +1,13 @@
 import { SignupUserDto } from '@/auth/dto/signup-user.dto';
-import { Exclude } from 'class-transformer';
+import { Exclude, Expose } from 'class-transformer';
 
 export class PublicUserDto extends SignupUserDto {
+  @Expose()
+  id: string | number;
+
+  @Expose()
+  name: string;
+
   @Exclude()
   password: string;
 

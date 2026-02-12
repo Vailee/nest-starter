@@ -30,11 +30,10 @@ export class AuthService {
     if (existingUser) {
       throw new ForbiddenException('Username already exists');
     }
-    const user = await this.userService.create({
+    return await this.userService.create({
       name,
       password,
       email,
     });
-    return user;
   }
 }
